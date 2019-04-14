@@ -4,6 +4,7 @@ from time import sleep
 import unittest
 from HTMLTestRunnerCN import HTMLTestRunner
 from QQemail import sendMail
+from kaoyan import mainFun
 
 
 class ChannelTest(unittest.TestCase):
@@ -28,7 +29,8 @@ class ChannelTest(unittest.TestCase):
             install_path = str(app_paths + '\\' + pname)
             print(install_path)
             self.driver.install_app(install_path)
-            print('安装完成，准备卸载')
+            print('安装完成')
+            mainFun()          # 验证主流程
             sleep(1)
             self.driver.remove_app('com.tal.kaoyan')
             print('卸载完成')
