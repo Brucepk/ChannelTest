@@ -38,4 +38,4 @@ def sendMail(report_file):
 
 
 if __name__ == '__main__':
-    sendMail(r'D:\PycharmProjects\report.html')
+    sendMail(r'./report.html')

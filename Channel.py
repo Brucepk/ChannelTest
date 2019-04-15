@@ -5,6 +5,8 @@ import unittest
 from HTMLTestRunnerCN import HTMLTestRunner
 from QQemail import sendMail
 from kaoyan import mainFun
+import logging
+import logging.config
 
 
 class ChannelTest(unittest.TestCase):
@@ -21,19 +23,26 @@ class ChannelTest(unittest.TestCase):
         caps['resetKeyboard'] = True
         cls.driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', caps)
         cls.driver.implicitly_wait(10)
+        config_file = open('./logger.conf', encoding='utf-8')
+        logging.config.fileConfig(config_file)
+        cls.logger_error = logging.getLogger(name='errorLogger')
+        cls.logger_info = logging.getLogger(name='infoLogger')
 
     def test_channel(self):
-        app_paths = r'D:\app'
-        pnames = os.listdir(app_paths)
-        for pname in pnames:
-            install_path = str(app_paths + '\\' + pname)
-            print(install_path)
-            self.driver.install_app(install_path)
-            print('安装完成')
-            mainFun()          # 验证主流程
-            sleep(1)
-            self.driver.remove_app('com.tal.kaoyan')
-            print('卸载完成')
+        try:
+            app_paths = r'F:\app'
+            pnames = os.listdir(app_paths)
+            for pname in pnames:
+                install_path = str(app_paths + '\\' + pname)
+                self.driver.install_app(install_path)
+                self.logger_info.info('app安装成功')
+                # mainFun()          # 验证主流程
+                sleep(1)
+                self.driver.remove_app('com.tal.kaoyan')
+                self.logger_info.info('app卸载成功')
+            self.logger_info.info('安装卸载功能验证成功')
+        except:
+            self.logger_error.info('验证失败')
 
     def tearDown(self):
         self.driver.quit()
@@ -46,7 +55,7 @@ if __name__ == '__main__':
     runner = HTMLTestRunner(stream=fp, title="测试报告", description='测试用例执行结果')
     runner.run(suite)
     fp.close()
-    sendMail(r'D:\PycharmProjects\report.html')
+    sendMail(r'./report.html')
 
 
 

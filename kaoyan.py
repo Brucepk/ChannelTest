@@ -129,6 +129,10 @@ def mainFun():
     driver.find_element_by_id('com.tal.kaoyan:id/activity_perfectinfomation_goBtn').click()
 
 
+if __name__ == '__main__':
+    mainFun()
+
+
 
 
 
