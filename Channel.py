@@ -23,10 +23,9 @@ class ChannelTest(unittest.TestCase):
         caps['resetKeyboard'] = True
         cls.driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', caps)
         cls.driver.implicitly_wait(10)
-        config_file = open('./logger.conf', encoding='utf-8')
+        config_file = open(r'./logger.conf', encoding='utf-8')
         logging.config.fileConfig(config_file)
-        cls.logger_error = logging.getLogger(name='errorLogger')
-        cls.logger_info = logging.getLogger(name='infoLogger')
+        cls.logger = logging.getLogger('infoLogger')
 
     def test_channel(self):
         try:
@@ -35,14 +34,14 @@ class ChannelTest(unittest.TestCase):
             for pname in pnames:
                 install_path = str(app_paths + '\\' + pname)
                 self.driver.install_app(install_path)
-                self.logger_info.info('app安装成功')
+                self.logger.info('app安装成功')
                 # mainFun()          # 验证主流程
                 sleep(1)
                 self.driver.remove_app('com.tal.kaoyan')
-                self.logger_info.info('app卸载成功')
-            self.logger_info.info('安装卸载功能验证成功')
+                self.logger.info('app卸载成功')
+            self.logger.info('安装卸载功能验证成功')
         except:
-            self.logger_error.info('验证失败')
+            self.logger.error('验证失败')
 
     def tearDown(self):
         self.driver.quit()
